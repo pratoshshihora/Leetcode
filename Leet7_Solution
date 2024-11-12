@@ -1,0 +1,37 @@
+class Solution {
+public:
+vector<string>ans;
+bool isvalid(string& curr){
+    int count = 0 ;
+    
+    for(int i = 0 ; i<curr.length() ; i++){
+        if(curr[i] == '(')count++; 
+        if(curr[i] == ')') count--;
+        if(count<0 ) return false; //e.g. )()( ->[-1 + 1 -1 + 1] at last count == 0 ,but not a valid string, and whenever count be in negative return false
+    }
+    return count ==0;
+}
+void solve(string& curr , int  n ,int open, int close){
+    if(curr.length() == 2*n){ //if in given n we got total no. brackets 
+        if(isvalid(curr)){ //then check it is valid or not
+        ans.push_back(curr); //if it is valid puh into ans
+        }
+    return; //else return explicitly
+    }
+    if(open<n){ //in a valid string open bracket == n, as no. is starting from 0,it's < n
+     curr.push_back('(');
+        solve(curr,n,open +1 ,close); //increment open bracket +1
+        curr.pop_back();
+    }
+    if(close<open){ //no. of open bracket == no. of close bracket,it remove invalid string before going to the last level
+        curr.push_back(')');
+        solve(curr,n,open , close+1);
+        curr.pop_back();
+    }
+}
+    vector<string> generateParenthesis(int n) {
+        string curr =""; //make a empty string
+        solve(curr,n,0,0); 
+        return ans;
+    }
+};
